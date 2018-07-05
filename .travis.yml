@@ -16,9 +16,10 @@ before_install:
 jobs:
   include:
     - stage: tests
+      script: echo $TRAVIS_BUILD_DIR
       script:
-        - docker run --rm -v $TRAVIS_BUILD_DIR:$TRAVIS_BUILD_DIR -w $TRAVIS_BUILD_DIR \
-         registry.cn-hangzhou.aliyuncs.com/leosocy/opencv:3.4.1 \
+        - docker run --rm -v $TRAVIS_BUILD_DIR:$TRAVIS_BUILD_DIR -w $TRAVIS_BUILD_DIR
+         registry.cn-hangzhou.aliyuncs.com/leosocy/opencv:3.4.1
          sh -c 'mkdir build; cmake ../test; ./test_edcc'
     - stage: lint
       script:
