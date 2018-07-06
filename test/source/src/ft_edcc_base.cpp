@@ -156,13 +156,6 @@ void ft_edcc_base::CheckConfigParams(const char *paramName,
     EXPECT_EQ(configValue->asInt(), expectValue);
 }
 
-void ft_edcc_base::CheckConfigParamExists(const char *paramName)
-{
-    Json::Value *configValue;
-    configValue = GetJsonValueByConfigParamName(configPath, paramName);
-    EXPECT_TRUE(configValue != NULL);
-}
-
 void ft_edcc_base::CheckConfigParamNotExists(const char *paramName)
 {
     Json::Value *configValue;

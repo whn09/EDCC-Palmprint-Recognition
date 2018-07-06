@@ -60,7 +60,8 @@ Status EDCCoding::EncodeToBuffer(const EDCC_CFG_T &config,
         *buffer_size = 0;
         return Status::NullPtrError();
     }
-    if (buffer_ != NULL)
+    Status s = Encode(config, buffer_size);
+    if (s.IsOk() && buffer_ != NULL)
     {
         if (buffer_max_len < buffer_len())
         {
@@ -72,20 +73,6 @@ Status EDCCoding::EncodeToBuffer(const EDCC_CFG_T &config,
         *buffer_size = buffer_len();
         return Status::Ok();
     }
-
-    Status s = Encode(config, buffer_size);
-    if (!s.IsOk())
-    {
-        return s;
-    }
-    if (buffer_max_len < *buffer_size)
-    {
-        EDCC_Log("EDCCoding::encrypt bufMaxLen smaller than the real space occupied!");
-        *buffer_size = 0;
-        return Status::CodingBufferLenNotEnough();
-    }
-    memcpy(coding_buffer, buffer_, *buffer_size);
-
     return s;
 }
 
