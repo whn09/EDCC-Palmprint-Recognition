@@ -55,6 +55,7 @@ Status EDCCoding::EncodeToBuffer(const EDCC_CFG_T &config,
                                  u_char *coding_buffer,
                                  size_t *buffer_size)
 {
+    EDCC_Log("EDCCoding::EncodeToBuffer: %s\n", "start");
     if (coding_buffer == NULL)
     {
         *buffer_size = 0;
@@ -116,6 +117,7 @@ Status EDCCoding::EncodeToHexString(const EDCC_CFG_T &config, string *hex_str)
 
 Status EDCCoding::Encode(const EDCC_CFG_T &config, size_t *buffer_size)
 {
+    EDCC_Log("EDCCoding::Encode: %s\n", "start");
     if (buffer_ != NULL)
     {
         *buffer_size = buffer_len();

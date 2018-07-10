@@ -135,6 +135,7 @@ PalmprintCode::~PalmprintCode()
 
 Status PalmprintCode::Encode(const EDCC_CFG_T &config)
 {
+    EDCC_Log("PalmprintCode::Encode: %s\n", "start");
     if (!Checker::CheckConfig(config))
     {
         return Status::LoadConfigError();
@@ -178,6 +179,7 @@ Status PalmprintCode::EncodeToBuffer(const EDCC_CFG_T &config,
                                      u_char *coding_buffer,
                                      size_t *buffer_size)
 {
+    EDCC_Log("PalmprintCode::EncodeToBuffer: %s\n", "start");
     assert(coding_);
     Status s = Encode(config);
     if (!s.IsOk())
