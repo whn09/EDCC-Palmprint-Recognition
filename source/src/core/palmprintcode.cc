@@ -155,7 +155,7 @@ Status PalmprintCode::Encode(const EDCC_CFG_T &config)
 
     vector<int> compression_params;
     compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
-    compression_params.push_back(9);
+    compression_params.push_back(0); // 0-9
     try {
         cv::imwrite("/tmp/tmp.png", img_tmp, compression_params);
     }
