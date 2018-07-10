@@ -160,7 +160,6 @@ Status PalmprintCode::Encode(const EDCC_CFG_T &config)
     }
     catch (runtime_error& ex) {
         fprintf(stderr, "Exception converting image to PNG format: %s\n", ex.what());
-        return 1;
     }
 
     filter.Handle(img_tmp, &gabor_result);
