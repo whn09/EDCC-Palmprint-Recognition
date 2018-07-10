@@ -151,6 +151,18 @@ Status PalmprintCode::Encode(const EDCC_CFG_T &config)
     Mat img_tmp = spec_img->clone();
     Mat gabor_result;
     EnhanceImage(img_tmp, img_tmp, config.laplaceSize);
+
+    vector<int> compression_params;
+    compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
+    compression_params.push_back(9);
+    try {
+        imwrite("tmp.png", mat, compression_params);
+    }
+    catch (runtime_error& ex) {
+        fprintf(stderr, "Exception converting image to PNG format: %s\n", ex.what());
+        return 1;
+    }
+
     filter.Handle(img_tmp, &gabor_result);
     vector<cv::Mat> result_vec;
     split(gabor_result, result_vec);
