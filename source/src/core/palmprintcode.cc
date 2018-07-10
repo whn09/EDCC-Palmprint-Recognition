@@ -159,7 +159,7 @@ Status PalmprintCode::Encode(const EDCC_CFG_T &config)
         cv::imwrite("/tmp/tmp.png", img_tmp, compression_params);
     }
     catch (runtime_error& ex) {
-        fprintf(stderr, "Exception converting image to PNG format: %s\n", ex.what());
+        EDCC_Log("Exception converting image to PNG format: %s\n", ex.what());
     }
 
     filter.Handle(img_tmp, &gabor_result);
