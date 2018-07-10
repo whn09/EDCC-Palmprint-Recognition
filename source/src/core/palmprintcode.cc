@@ -157,7 +157,7 @@ Status PalmprintCode::Encode(const EDCC_CFG_T &config)
     compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
     compression_params.push_back(0); // 0-9
     try {
-        cv::imwrite("/tmp/tmp.png", img_tmp, compression_params);
+        cv::imwrite("tmp.png", img_tmp, compression_params);
     }
     catch (runtime_error& ex) {
         EDCC_Log("Exception converting image to PNG format: %s\n", ex.what());
