@@ -22,7 +22,7 @@
         }
     },
     "imageSizeW" : {
-        "default" : 29,
+        "default" : 128,
         "desc" : {
             "en-US" : "Input palmprint image size width.",
             "zh-CN" : "输入掌纹图像的宽度"
@@ -33,7 +33,7 @@
         }
     },
     "imageSizeH" : {
-        "default" : 29,
+        "default" : 128,
         "desc" : {
             "en-US" : "Input palmprint image size height.",
             "zh-CN" : "输入掌纹图像的高度"
