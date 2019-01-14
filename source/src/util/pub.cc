@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
+#include <sstream>
 
 namespace edcc
 {
@@ -28,4 +29,13 @@ void EDCC_Log_Func(const char *format, ...)
     fclose(outFile);
     #endif
 }
+
+std::string itos(int n)
+{
+    std::ostringstream stream;
+    stream<<n;
+    return stream.str();
+}
+
+
 } // namespace edcc

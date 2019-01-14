@@ -9,6 +9,7 @@
 #include "core/checker.h"
 #include "core/matcher.h"
 #include "util/status.h"
+#include <string>
 
 namespace edcc
 {
@@ -52,7 +53,8 @@ void GaborFilter::Handle(const cv::Mat &src, cv::Mat *merge)
         dest_vec.push_back(dst.clone());
     }
     cv::merge(dest_vec, *merge);
-    cv::normalize(*merge, *merge, 0, 1, CV_MINMAX);
+//    cv::normalize(*merge, *merge, 0, 1, CV_MINMAX);
+    cv::normalize(*merge, *merge, 0, 1, cv::NORM_MINMAX);
 }
 
 void GaborFilter::GetGaborKernelReal(cv::Mat *kernel,
@@ -133,6 +135,92 @@ PalmprintCode::~PalmprintCode()
     }
 }
 
+Status PalmprintCode::GetEnhanceImage(const char *image_out_path,
+                                     const EDCC_CFG_T &config,
+                                     size_t buffer_max_len,
+                                     u_char *coding_buffer,
+                                     size_t *buffer_size)
+{
+    EDCC_Log("PalmprintCode::GetEnhanceImage: %s\n", "start");
+    if (!Checker::CheckConfig(config))
+    {
+        return Status::LoadConfigError();
+    }
+
+    GaborFilter filter(cv::Size(config.gaborSize, config.gaborSize),
+                       config.directions);
+    Mat *spec_img = palmprint_->GetSpecImg(cv::Size(config.imageSizeW, config.imageSizeH));
+    if (spec_img == NULL)
+    {
+        EDCC_Log("%s not exists!", palmprint_->image_path().c_str());
+        return Status::LoadPalmprintError();
+    }
+    Mat img_tmp = spec_img->clone();
+    Mat gabor_result;
+    EnhanceImage(img_tmp, img_tmp, config.laplaceSize);
+
+    vector<int> compression_params;
+//    compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
+    compression_params.push_back(cv::IMWRITE_PNG_COMPRESSION);
+    compression_params.push_back(0); // 0-9
+
+    cv::imwrite(image_out_path, img_tmp, compression_params); // For Mac, comment this line
+    /*try {
+        cv::imwrite(image_out_path, img_tmp, compression_params);
+    }
+    catch (runtime_error& ex) {
+        EDCC_Log("Exception converting image to PNG format: %s\n", ex.what());
+    }*/
+
+    /*filter.Handle(img_tmp, &gabor_result);
+    vector<cv::Mat> result_vec;
+    split(gabor_result, result_vec);
+
+    //printf("gabor_result.channels()=%d\n", gabor_result.channels());
+    for(int i=0;i<result_vec.size();i++) {
+        try {
+            string image_out_path_str = image_out_path;
+            image_out_path_str += ".channel_"+itos(i)+".png";
+            //std::cout<<result_vec[i]<<std::endl;
+            //std::cout<<result_vec[i].mul(255)<<std::endl;
+            Mat new_result_vec_i;
+            ((cv::Mat)result_vec[i].mul(255)).convertTo(new_result_vec_i, CV_8U);
+            //std::cout<<new_result_vec_i<<std::endl;
+            cv::imwrite(image_out_path_str.c_str(), new_result_vec_i, compression_params);
+        }
+        catch (runtime_error& ex) {
+            EDCC_Log("Exception converting image to PNG format: %s\n", ex.what());
+        }
+    }
+
+    GenEDCCoding(result_vec,
+                 cv::Size(config.imageSizeW, config.imageSizeH),
+                 config.directions);
+
+    try {
+        string image_out_path_str = image_out_path;
+        image_out_path_str += ".c.png";
+        Mat new_result_vec_i;
+        ((cv::Mat)coding_->c_.mul(255)).convertTo(new_result_vec_i, CV_8U);
+        cv::imwrite(image_out_path_str.c_str(), new_result_vec_i, compression_params);
+    }
+    catch (runtime_error& ex) {
+        EDCC_Log("Exception converting image to PNG format: %s\n", ex.what());
+    }
+    try {
+        string image_out_path_str = image_out_path;
+        image_out_path_str += ".cs.png";
+        Mat new_result_vec_i;
+        ((cv::Mat)coding_->cs_.mul(255)).convertTo(new_result_vec_i, CV_8U);
+        cv::imwrite(image_out_path_str.c_str(), new_result_vec_i, compression_params);
+    }
+    catch (runtime_error& ex) {
+        EDCC_Log("Exception converting image to PNG format: %s\n", ex.what());
+    }*/
+
+    return Status::Ok();
+}
+
 Status PalmprintCode::Encode(const EDCC_CFG_T &config)
 {
     EDCC_Log("PalmprintCode::Encode: %s\n", "start");
@@ -152,16 +240,6 @@ Status PalmprintCode::Encode(const EDCC_CFG_T &config)
     Mat img_tmp = spec_img->clone();
     Mat gabor_result;
     EnhanceImage(img_tmp, img_tmp, config.laplaceSize);
-
-    vector<int> compression_params;
-    compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
-    compression_params.push_back(0); // 0-9
-    try {
-        cv::imwrite("tmp.png", img_tmp, compression_params);
-    }
-    catch (runtime_error& ex) {
-        EDCC_Log("Exception converting image to PNG format: %s\n", ex.what());
-    }
 
     filter.Handle(img_tmp, &gabor_result);
     vector<cv::Mat> result_vec;

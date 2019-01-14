@@ -5,6 +5,13 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-green.svg)](https://raw.githubusercontent.com/Leosocy/EDCC-Palmprint-Recognition/master/LICENSE)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/16141/badge.svg)](https://scan.coverity.com/projects/leosocy-edcc-palmprint-recognition)
 
+【On Mac!!!】
+
+```
+export CC=/usr/local/bin/gcc-5
+export CXX=/usr/local/bin/g++-5
+```
+
 `EDCC(Enhanced and Discriminative Competitive Code)`, which is used for palmprint-recognition.
 
 Use the `EDCC` algorithm to validate on several published palmprint databases(`multispectral`, `tongji`), the first `N(N = 2, 4, 6, 8)` palmprint images of each palm are employed as training samples and the remaining palmprint images form the test sample set. Each sample in the test sample set is compared with all samples of each class in the training set to calculate the matching score. The class that produces the highest matching score is treated as the class of the test sample.

@@ -40,7 +40,8 @@ bool Palmprint::operator==(const Palmprint &rhs) const
 
 cv::Mat* Palmprint::GetOrigImg()
 {
-    image_ = cv::imread(image_path_, CV_LOAD_IMAGE_COLOR);
+//    image_ = cv::imread(image_path_, CV_LOAD_IMAGE_COLOR);
+    image_ = cv::imread(image_path_);
     if (!image_.data)
     {
         EDCC_Log("Read image failed!");
@@ -56,7 +57,8 @@ cv::Mat* Palmprint::GetSpecImg(const cv::Size &img_size, bool is_gray)
     resize(*origin_image, *origin_image, img_size);
     if (is_gray)
     {
-        cvtColor(*origin_image, *origin_image, CV_BGR2GRAY);
+//        cvtColor(*origin_image, *origin_image, CV_BGR2GRAY);
+        cvtColor(*origin_image, *origin_image, cv::COLOR_BGR2GRAY);
     }
     return origin_image;
 }

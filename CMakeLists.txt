@@ -4,6 +4,13 @@
 option(BUILD_SHARED_LIBS "Build shared libraries (DLLs)." ON)
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+#SET(CMAKE_C_COMPILER "/usr/local/bin/gcc-5")
+#SET(CMAKE_CXX_COMPILER "/usr/local/bin/g++-5")
+#SET(OPENCV_LIB_FLAGS "-I/usr/local/Cellar/opencv/3.4.2/include/opencv -I/usr/local/Cellar/opencv/3.4.2/include -L/usr/local/Cellar/opencv/3.4.2/lib -lopencv_stitching -lopencv_superres -lopencv_videostab -lopencv_aruco -lopencv_bgsegm -lopencv_bioinspired -lopencv_ccalib -lopencv_dnn_objdetect -lopencv_dpm -lopencv_face -lopencv_photo -lopencv_fuzzy -lopencv_hfs -lopencv_img_hash -lopencv_line_descriptor -lopencv_optflow -lopencv_reg -lopencv_rgbd -lopencv_saliency -lopencv_stereo -lopencv_structured_light -lopencv_phase_unwrapping -lopencv_surface_matching -lopencv_tracking -lopencv_datasets -lopencv_dnn -lopencv_plot -lopencv_xfeatures2d -lopencv_shape -lopencv_video -lopencv_ml -lopencv_ximgproc -lopencv_calib3d -lopencv_features2d -lopencv_highgui -lopencv_videoio -lopencv_flann -lopencv_xobjdetect -lopencv_imgcodecs -lopencv_objdetect -lopencv_xphoto -lopencv_imgproc -lopencv_core")
+#SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OPENCV_LIB_FLAGS}")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OPENCV_LIB_FLAGS}")
+
 SET(PROJECT_NAME edcc)
 PROJECT(${PROJECT_NAME})
 
@@ -69,8 +76,9 @@ EXECUTE_PROCESS(COMMAND touch /etc/ld.so.conf.d/edcc.conf
 INSTALL(CODE "execute_process(COMMAND ldconfig)")
 
 # install edcc_adapter.py, need python 3.x
-IF(PYTHONINTERP_FOUND AND PYTHON_VERSION_MAJOR GREATER 2)
-    EXECUTE_PROCESS(COMMAND "${PYTHON_EXECUTABLE}" -c 
+#IF(PYTHONINTERP_FOUND AND PYTHON_VERSION_MAJOR GREATER 2)
+IF(PYTHONINTERP_FOUND)
+    EXECUTE_PROCESS(COMMAND "${PYTHON_EXECUTABLE}" -c
                                             "if True:
                                                 from distutils import sysconfig as sc
                                                 print(sc.get_python_lib(plat_specific=True))"

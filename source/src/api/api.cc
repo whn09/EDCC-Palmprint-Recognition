@@ -19,6 +19,39 @@ using namespace edcc;
 const char* const kDefaultId = "default_id";
 const char* const kDefaultImagePath = "default_image_path";
 
+
+int GetEnhanceImage(const char *palmprint_image_path,
+                  const char *palmprint_image_out_path,
+                  const char *config_file_name,
+                  size_t buffer_max_len,
+                  unsigned char *coding_buffer,
+                  size_t *buffer_len)
+{
+    *buffer_len = 0;
+
+    CHECK_POINTER_NULL_RETURN(palmprint_image_path, Status::NullPtrError().ToExtCode());
+    CHECK_POINTER_NULL_RETURN(palmprint_image_out_path, Status::NullPtrError().ToExtCode());
+    CHECK_POINTER_NULL_RETURN(config_file_name, Status::NullPtrError().ToExtCode());
+    CHECK_POINTER_NULL_RETURN(coding_buffer, Status::NullPtrError().ToExtCode());
+
+    IO train_io;
+    ifstream config_in;
+
+    config_in.open(config_file_name);
+    Status s = train_io.LoadConfig(config_in);
+    config_in.close();
+    CHECK_FALSE_RETURN(s.IsOk(), s.ToExtCode());
+
+    PalmprintCode onePalmprint(kDefaultId, palmprint_image_path);
+    s = onePalmprint.GetEnhanceImage(palmprint_image_out_path,
+                                    train_io.config(),
+                                    buffer_max_len,
+                                    coding_buffer,
+                                    buffer_len);
+
+    return s.ToExtCode();
+}
+
 int GetEDCCCoding(const char *palmprint_image_path,
                   const char *config_file_name,
                   size_t buffer_max_len,

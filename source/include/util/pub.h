@@ -5,6 +5,8 @@
 #ifndef __PUB_H__
 #define __PUB_H__
 
+#include <string>
+
 namespace edcc
 {
 
@@ -97,6 +99,8 @@ typedef unsigned int u_int;
                                             format"\n"                                              \
                                             , __FUNCTION__, __LINE__, ##__VA_ARGS__)
 void EDCC_Log_Func(const char *format, ...);
+
+std::string itos(int n);
 
 } //namespace edcc
 

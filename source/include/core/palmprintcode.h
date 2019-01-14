@@ -29,6 +29,11 @@ public:
     PalmprintCode& operator =(const PalmprintCode &other);
     ~PalmprintCode();
     Status Encode(const EDCC_CFG_T &config);
+    Status GetEnhanceImage(const char *image_out_path,
+                          const EDCC_CFG_T &config,
+                          size_t buffer_max_len,
+                          u_char *coding_buffer,
+                          size_t *buffer_size);
     Status EncodeToBuffer(const EDCC_CFG_T &config,
                           size_t buffer_max_len,
                           u_char *coding_buffer,
