@@ -49,6 +49,13 @@ extern "C"
 {
 #endif
     /* Some primitive operation */
+    EDCC_API int GetEnhanceImage(const char *palmprint_image_path,
+                               const char *palmprint_image_out_path,
+                               const char *config_file_name,
+                               size_t buffer_max_len,
+                               unsigned char *coding_buffer,
+                               size_t *buffer_len);
+
     EDCC_API int GetEDCCCoding(const char *palmprint_image_path,
                                const char *config_file_name,
                                size_t buffer_max_len,
